@@ -29,4 +29,5 @@ change the delay time in between cycles. So, we picked this motor because we wer
 
 ## Modular Diagram of Code 
 
-<img width="758" alt="image" src="https://github.com/user-attachments/assets/af613852-c111-409c-81ef-a02be374aa38" />
+<img width="697" alt="image" src="https://github.com/user-attachments/assets/87c83584-8f7b-437b-b36f-a6e8001e1db8" />
+
