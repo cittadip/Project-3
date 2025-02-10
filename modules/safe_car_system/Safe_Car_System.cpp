@@ -1,10 +1,16 @@
 //=====[Libraries]=============================================================
 
-#include "mbed.h"
 #include "arm_book_lib.h"
+#include "mbed.h"
 
-#include "strobe_light.h"
+
 #include "smart_home_system.h"
+
+#include "siren.h"
+#include "user_interface.h"
+#include "fire_alarm.h"
+#include "pc_serial_com.h"
+#include "event_log.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -12,49 +18,30 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalOut strobeLight(LED1);
-
 //=====[Declaration of external public global variables]=======================
 
 //=====[Declaration and initialization of public global variables]=============
 
 //=====[Declaration and initialization of private global variables]============
 
-static bool strobeLightState = OFF;
-
 //=====[Declarations (prototypes) of private functions]========================
 
 //=====[Implementations of public functions]===================================
 
-void strobeLightInit()
+void SafeCarSystemInit()
 {
-    strobeLight = OFF;
+    userInterfaceInit();
+    fireAlarmInit();
+    pcSerialComInit();
 }
 
-bool strobeLightStateRead()
+void SafeCarSystemUpdate()
 {
-    return strobeLightState;
-}
-
-void strobeLightStateWrite( bool state )
-{
-    strobeLightState = state;
-}
-
-void strobeLightUpdate( int strobeTime )
-{
-    static int accumulatedTimeAlarm = 0;
-    accumulatedTimeAlarm = accumulatedTimeAlarm + SYSTEM_TIME_INCREMENT_MS;
-    
-    if( strobeLightState ) {
-        if( accumulatedTimeAlarm >= strobeTime ) {
-            accumulatedTimeAlarm = 0;
-            strobeLight= !strobeLight;
-        }
-    } else {
-        strobeLight = OFF;
-    }
+    userInterfaceUpdate();
+    fireAlarmUpdate();    
+    pcSerialComUpdate();
+    eventLogUpdate();
+    delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
 //=====[Implementations of private functions]==================================
-

@@ -1,7 +1,5 @@
-//=====[#include guards - begin]===============================================
-
-#ifndef _GAS_SENSOR_H_
-#define _GAS_SENSOR_H_
+#ifndef _WIPER_MODE_H_
+#define _WIPER_MODE_H_
 
 //=====[Declaration of public defines]=========================================
 
@@ -9,10 +7,10 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void gasSensorInit();
-void gasSensorUpdate();
-bool gasSensorRead();
-
+int WiperMode();
+int IntDelay();
+void WiperModeState();
+void INT_State();
 //=====[#include guards - end]=================================================
 
-#endif // _GAS_SENSOR_H_
+#endif // _WIPER_MODE_H_

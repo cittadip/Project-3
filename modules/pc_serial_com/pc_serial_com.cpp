@@ -5,23 +5,12 @@
 
 #include "pc_serial_com.h"
 
-#include "siren.h"
-#include "fire_alarm.h"
-#include "code.h"
-#include "date_and_time.h"
-#include "temperature_sensor.h"
+
 #include "gas_sensor.h"
-#include "event_log.h"
 
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
-
-typedef enum{
-    PC_SERIAL_COMMANDS,
-    PC_SERIAL_GET_CODE,
-    PC_SERIAL_SAVE_NEW_CODE,
-} pcSerialComMode_t;
 
 //=====[Declaration and initialization of public global objects]===============
 
@@ -49,18 +38,37 @@ static void pcSerialComSaveNewCodeUpdate( char receivedChar );
 static void pcSerialComCommandUpdate( char receivedChar );
 
 static void availableCommands();
-static void commandShowCurrentAlarmState();
-static void commandShowCurrentGasDetectorState();
-static void commandShowCurrentOverTemperatureDetectorState();
-static void commandEnterCodeSequence();
-static void commandEnterNewCode();
-static void commandShowCurrentTemperatureInCelsius();
-static void commandShowCurrentTemperatureInFahrenheit();
-static void commandSetDateAndTime();
-static void commandShowDateAndTime();
-static void commandShowStoredEvents();
+
 
 //=====[Implementations of public functions]===================================
+void uartCommands(int cmd) {
+  switch (cmd) {
+  case UART_INTRO_KEY:
+    uartUsb.write("\nWelcome to enhanced alarm system model 218-W24", 46);
+    break;
+
+  case UART_ENGINE_KEY:
+    uartUsb.write("\nEngine started.", 15);
+    break;
+  case UART_ERROR_KEY:
+    uartUsb.write("\nIgnition inhibited", 19);
+    uartUsb.write("\nReasons:", 9);
+
+    if (!driverPresent) {
+      uartUsb.write("\nDriver not present.", 20);
+    }
+    if (!passengerPresent) {
+      uartUsb.write("\nPassenger not present.", 23);
+    }
+    if (!driverSeatbelt) {
+      uartUsb.write("\nDriver Seatbelt not fastened.", 30);
+    }
+    if (!passengerSeatbelt) {
+      uartUsb.write("\nPassenger Seatbelt not fastened.", 33);
+    }
+    break;
+  }
+}
 
 void pcSerialComInit()
 {
@@ -150,161 +158,3 @@ static void pcSerialComSaveNewCodeUpdate( char receivedChar )
         numberOfCodeChars = 0;
         codeWrite( newCodeSequence );
         pcSerialComStringWrite( "\r\nNew code configured\r\n\r\n" );
-    } 
-}
-
-static void pcSerialComCommandUpdate( char receivedChar )
-{
-    switch (receivedChar) {
-        case '1': commandShowCurrentAlarmState(); break;
-        case '2': commandShowCurrentGasDetectorState(); break;
-        case '3': commandShowCurrentOverTemperatureDetectorState(); break;
-        case '4': commandEnterCodeSequence(); break;
-        case '5': commandEnterNewCode(); break;
-        case 'c': case 'C': commandShowCurrentTemperatureInCelsius(); break;
-        case 'f': case 'F': commandShowCurrentTemperatureInFahrenheit(); break;
-        case 's': case 'S': commandSetDateAndTime(); break;
-        case 't': case 'T': commandShowDateAndTime(); break;
-        case 'e': case 'E': commandShowStoredEvents(); break;
-        default: availableCommands(); break;
-    } 
-}
-
-static void availableCommands()
-{
-    pcSerialComStringWrite( "Available commands:\r\n" );
-    pcSerialComStringWrite( "Press '1' to get the alarm state\r\n" );
-    pcSerialComStringWrite( "Press '2' to get the gas detector state\r\n" );
-    pcSerialComStringWrite( "Press '3' to get the over temperature detector state\r\n" );
-    pcSerialComStringWrite( "Press '4' to enter the code to deactivate the alarm\r\n" );
-    pcSerialComStringWrite( "Press '5' to enter a new code to deactivate the alarm\r\n" );
-    pcSerialComStringWrite( "Press 'f' or 'F' to get lm35 reading in Fahrenheit\r\n" );
-    pcSerialComStringWrite( "Press 'c' or 'C' to get lm35 reading in Celsius\r\n" );
-    pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
-    pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
-    pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
-    pcSerialComStringWrite( "\r\n" );
-}
-
-static void commandShowCurrentAlarmState()
-{
-    if ( sirenStateRead() ) {
-        pcSerialComStringWrite( "The alarm is activated\r\n");
-    } else {
-        pcSerialComStringWrite( "The alarm is not activated\r\n");
-    }
-}
-
-static void commandShowCurrentGasDetectorState()
-{
-    if ( gasDetectorStateRead() ) {
-        pcSerialComStringWrite( "Gas is being detected\r\n");
-    } else {
-        pcSerialComStringWrite( "Gas is not being detected\r\n");
-    }    
-}
-
-static void commandShowCurrentOverTemperatureDetectorState()
-{
-    if ( overTemperatureDetectorStateRead() ) {
-        pcSerialComStringWrite( "Temperature is above the maximum level\r\n");
-    } else {
-        pcSerialComStringWrite( "Temperature is below the maximum level\r\n");
-    }
-}
-
-static void commandEnterCodeSequence()
-{
-    if( sirenStateRead() ) {
-        pcSerialComStringWrite( "Please enter the four digits numeric code " );
-        pcSerialComStringWrite( "to deactivate the alarm: " );
-        pcSerialComMode = PC_SERIAL_GET_CODE;
-        codeComplete = false;
-        numberOfCodeChars = 0;
-    } else {
-        pcSerialComStringWrite( "Alarm is not activated.\r\n" );
-    }
-}
-
-static void commandEnterNewCode()
-{
-    pcSerialComStringWrite( "Please enter the new four digits numeric code " );
-    pcSerialComStringWrite( "to deactivate the alarm: " );
-    numberOfCodeChars = 0;
-    pcSerialComMode = PC_SERIAL_SAVE_NEW_CODE;
-
-}
-
-static void commandShowCurrentTemperatureInCelsius()
-{
-    char str[100] = "";
-    sprintf ( str, "Temperature: %.2f \xB0 C\r\n",
-                    temperatureSensorReadCelsius() );
-    pcSerialComStringWrite( str );  
-}
-
-static void commandShowCurrentTemperatureInFahrenheit()
-{
-    char str[100] = "";
-    sprintf ( str, "Temperature: %.2f \xB0 C\r\n",
-                    temperatureSensorReadFahrenheit() );
-    pcSerialComStringWrite( str );  
-}
-
-static void commandSetDateAndTime()
-{
-    char year[5] = "";
-    char month[3] = "";
-    char day[3] = "";
-    char hour[3] = "";
-    char minute[3] = "";
-    char second[3] = "";
-    
-    pcSerialComStringWrite("\r\nType four digits for the current year (YYYY): ");
-    pcSerialComStringRead( year, 4);
-    pcSerialComStringWrite("\r\n");
-
-    pcSerialComStringWrite("Type two digits for the current month (01-12): ");
-    pcSerialComStringRead( month, 2);
-    pcSerialComStringWrite("\r\n");
-
-    pcSerialComStringWrite("Type two digits for the current day (01-31): ");
-    pcSerialComStringRead( day, 2);
-    pcSerialComStringWrite("\r\n");
-
-    pcSerialComStringWrite("Type two digits for the current hour (00-23): ");
-    pcSerialComStringRead( hour, 2);
-    pcSerialComStringWrite("\r\n");
-
-    pcSerialComStringWrite("Type two digits for the current minutes (00-59): ");
-    pcSerialComStringRead( minute, 2);
-    pcSerialComStringWrite("\r\n");
-
-    pcSerialComStringWrite("Type two digits for the current seconds (00-59): ");
-    pcSerialComStringRead( second, 2);
-    pcSerialComStringWrite("\r\n");
-    
-    pcSerialComStringWrite("Date and time has been set\r\n");
-
-    dateAndTimeWrite( atoi(year), atoi(month), atoi(day), 
-        atoi(hour), atoi(minute), atoi(second) );
-}
-
-static void commandShowDateAndTime()
-{
-    char str[100] = "";
-    sprintf ( str, "Date and Time = %s", dateAndTimeRead() );
-    pcSerialComStringWrite( str );
-    pcSerialComStringWrite("\r\n");
-}
-
-static void commandShowStoredEvents()
-{
-    char str[EVENT_STR_LENGTH] = "";
-    int i;
-    for (i = 0; i < eventLogNumberOfStoredEvents(); i++) {
-        eventLogRead( i, str );
-        pcSerialComStringWrite( str );   
-        pcSerialComStringWrite( "\r\n" );                    
-    }
-}

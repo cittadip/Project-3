@@ -1,7 +1,5 @@
-//=====[#include guards - begin]===============================================
-
-#ifndef _STROBE_LIGHT_H_
-#define _STROBE_LIGHT_H_
+#ifndef _SERVO_H_
+#define _SERVO_H_
 
 //=====[Declaration of public defines]=========================================
 
@@ -9,11 +7,16 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void strobeLightInit();
-bool strobeLightStateRead();
-void strobeLightStateWrite( bool state );
-void strobeLightUpdate( int strobeTime );
+void SERVO_OFF_MODE();
+void SERVO_INT_MODE();
+void SERVO_LOW_MODE();
+void SERVO_HIGH_MODE();
+  
+void SHORT_MODE();
+void MEDIUM_MODE();
+void INT_State();
+void  LONG_MODE();
 
 //=====[#include guards - end]=================================================
 
-#endif // _STROBE_LIGHT_H_
+#endif // _WIPER_MODE_H_

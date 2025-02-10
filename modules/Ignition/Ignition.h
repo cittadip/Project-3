@@ -1,7 +1,8 @@
+
 //=====[#include guards - begin]===============================================
 
-#ifndef _FIRE_ALARM_H_
-#define _FIRE_ALARM_H_
+#ifndef _IGNITION_H_
+#define _IGNITION_H_
 
 //=====[Declaration of public defines]=========================================
 
@@ -9,13 +10,13 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void fireAlarmInit();
-void fireAlarmUpdate();
-bool gasDetectorStateRead();
-bool overTemperatureDetectorStateRead();
-bool gasDetectedRead();
-bool overTemperatureDetectedRead();
+void inputsInit();
+void outputsInit();
+void ignitionCase();
+void driverIntroduction();
+void drivingState();
+void uartCommands(int cmd);
 
 //=====[#include guards - end]=================================================
 
-#endif // _FIRE_ALARM_H_
+#endif // _IGNITION_H_

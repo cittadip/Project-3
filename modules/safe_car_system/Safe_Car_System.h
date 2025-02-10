@@ -1,19 +1,19 @@
 //=====[#include guards - begin]===============================================
 
-#ifndef _DATE_AND_TIME_H_
-#define _DATE_AND_TIME_H_
+#ifndef _SAFE_CAR_SYSTEM_H_
+#define _SAFE_CAR_SYSTEM_H_
 
 //=====[Declaration of public defines]=========================================
+
+//#define SYSTEM_TIME_INCREMENT_MS   10
 
 //=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-char* dateAndTimeRead();
-
-void dateAndTimeWrite( int year, int month, int day, 
-                       int hour, int minute, int second );
+void SafeCarSystemInit();
+void SafeCarSytemUpdate();
 
 //=====[#include guards - end]=================================================
 
-#endif // _DATE_AND_TIME_H_
+#endif // _SAFE_HOME_SYSTEM_H_
