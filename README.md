@@ -22,8 +22,8 @@ change the delay time in between cycles. So, we picked this motor because we wer
 | If the ignition is lit, normal ignition occurs, the blue LED turns on and the green LED off . Display the message, “Engine started.”    | ?|                                                                      
 | If the ignition is not enabled then ignition is inhibited. Sound the alarm buzzer and display the message, “Ignition inhibited” and why the ignition was inhibited | ? | 
 | Stop the engine when the ignition button is pushed and released when running                 | ? | 
-| Wipers move at the speed mode selected if the engine is running | ? |
-| Wipers move with the delay specified | ? |
+| Wipers move at the speed the user selected if the engine is running | ? |
+| Wipers move with the delay selected | ? |
 | The speed and delay of the wipers is displayed on the LCD| ?|
 | When wiper mode is selected to off the wiper goes back to 0 degrees, completing its cycle if in one | ?|
 
