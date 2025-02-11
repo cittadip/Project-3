@@ -7,6 +7,7 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
+void servoInit();
 void SERVO_OFF_MODE();
 void SERVO_INT_MODE();
 void SERVO_LOW_MODE();

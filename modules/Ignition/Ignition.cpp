@@ -10,6 +10,7 @@
 #include "mbed.h"
 #include <string>
 
+
 //=====[Defines]===============================================================
 
 //uart macros
@@ -56,6 +57,8 @@ bool waitForRelease = false;
 
 //=====[Declarations (prototypes) of public functions]=========================
 
+void drivingState();
+void uartCommands(int cmd); 
 
 //=====[Implementations of public functions]===================================
 
@@ -117,12 +120,12 @@ void ignitionCase() {
         sirenPin.input();
         //  also check for headlights settings here
         ignitionState();
-        headlightState();
+        // headlightState();
       } while (!ignitionButtonState);
 
       // if engine is off the headlights and blue indicator should be turned off
       blueIndicator = OFF;
-      headlightOff();
+    //   headlightOff();
     } else {
       // Display ignition failure message and reasons via UART
       // Report individual reasons for failure
@@ -200,5 +203,13 @@ void drivingState() {
   } else {
     greenIndicator = OFF; // One or more conditions not met, unsafe state
   }
+}
+
+bool isignitionon() {
+    if (blueIndicator == ON){
+    return true;
+    }else {
+    return false;
+    }
 }
 

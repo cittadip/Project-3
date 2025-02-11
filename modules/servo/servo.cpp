@@ -10,8 +10,21 @@
 #define DUTY_LOW 0.070
 #define DUTY_BACK 0.080
 
-PwmOut servo(PF_9);
+#define SMALL_DELAY 3000
+#define MEDIUM_DELAY 6000
+#define LONG_DELAY 8000
 
+#define LOW_TURN_TIME 3000
+// #define LOW_TURN_TIME 6000
+// #define LONG_DELAY 8000
+
+
+
+
+PwmOut servo(PF_9);
+void servoInit(){
+    servo.period(PERIOD);
+}
 
 
 void SERVO_OFF_MODE() {
@@ -20,43 +33,27 @@ void SERVO_OFF_MODE() {
   
 }
 void SERVO_INT_MODE() {
-  servo.period(PERIOD);
   servo.write(DUTY_LOW);
   servo.write(DUTY_BACK);
 }
 void SERVO_LOW_MODE() {
- servo.period(PERIOD);
   servo.write(DUTY_LOW);
+  delay(LOW_TURN_TIME);
   servo.write(DUTY_BACK);
+  delay(LOW_TURN_TIME);
 }
 void SERVO_HIGH_MODE() {
-  servo.period(PERIOD);
   servo.write(DUTY_HIGH);
   servo.write(DUTY_BACK);
 }
 
 
-while 
-void SHORT_MODE();
-    
-
-void MEDIUM_MODE();
-
-
-void LONG_MODE();
-
- 
-
-void SERVO_RUN( int delay, bool HI ) {
-
-    // move to 180
-
-    // move to 0
-
-
-    //delay because 
-
-
-
-
+void SHORT_MODE() {
+    delay(SMALL_DELAY);
+}
+void MEDIUM_MODE() {
+    delay(MEDIUM_DELAY);
+}
+void LONG_MODE() {
+    delay(LONG_DELAY);
 }

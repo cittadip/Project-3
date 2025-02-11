@@ -3,14 +3,14 @@
 #include "arm_book_lib.h"
 #include "mbed.h"
 
-
-#include "smart_home_system.h"
-
+#include "display.h"
+#include "ignition.h"
+#include "pc_serial_com.h"
+#include "servo.h"
 #include "siren.h"
 #include "user_interface.h"
-#include "fire_alarm.h"
-#include "pc_serial_com.h"
-#include "event_log.h"
+#include "wiper_mode.h"
+
 
 //=====[Declaration of private defines]========================================
 
@@ -31,17 +31,21 @@
 void SafeCarSystemInit()
 {
     userInterfaceInit();
-    fireAlarmInit();
     pcSerialComInit();
+    servoInit();
 }
 
 void SafeCarSystemUpdate()
 {
-    userInterfaceUpdate();
+    SERVO_LOW_MODE();
+    /*userInterfaceUpdate();
     fireAlarmUpdate();    
     pcSerialComUpdate();
     eventLogUpdate();
-    delay(SYSTEM_TIME_INCREMENT_MS);
+    if 
+    WiperModeState():
+    INT_State();
+    delay(SYSTEM_TIME_INCREMENT_MS);*/
 }
 
 //=====[Implementations of private functions]==================================
