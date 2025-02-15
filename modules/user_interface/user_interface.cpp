@@ -7,6 +7,7 @@
 #include "siren.h"
 #include "safe_car_system.h"
 #include "display.h"
+#include "wiper_mode.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -33,17 +34,15 @@ static void userInterfaceDisplayUpdate();
 
 //=====[Implementations of public functions]===================================
 
+
+
 void userInterfaceInit()
 {
-    incorrectCodeLed = OFF;
-    systemBlockedLed = OFF;
-    matrixKeypadInit( SYSTEM_TIME_INCREMENT_MS );
     userInterfaceDisplayInit();
 }
 
 void userInterfaceUpdate()
 {
-    systemBlockedIndicatorUpdate();
     userInterfaceDisplayUpdate();
 }
 
@@ -63,10 +62,12 @@ static void userInterfaceDisplayInit()
 static void userInterfaceDisplayUpdate()
 {
     static int accumulatedDisplayTime = 0;
+    int currentMode;
+    int currentDelay;
     //char temperatureString[3] = "";
     
-    if( accumulatedDisplayTime >=
-        DISPLAY_REFRESH_TIME_MS ) {
+    if( accumulatedDisplayTime >= DISPLAY_REFRESH_TIME_MS ) 
+    {
 
         accumulatedDisplayTime = 0;
 
@@ -78,11 +79,14 @@ static void userInterfaceDisplayUpdate()
 
         displayCharPositionWrite ( 5,0 );
 
-        if ( WiperMode() == OFF_MODE ) 
+        currentMode = WiperMode();
+        currentDelay = IntDelay();
+
+        if ( currentMode == OFF_MODE ) {
             displayStringWrite( "OFF" );
-        else if ( WiperMode() == INT_MODE ) {
+        } else if ( currentMode == INT_MODE ) {
             displayStringWrite( "INT" );
-        else if ( WiperMode() == LOW_MODE ) {
+        } else if ( currentMode == LOW_MODE ) {
             displayStringWrite( "LOW" );
         } else {
             displayStringWrite( "HIGH" );
@@ -90,16 +94,17 @@ static void userInterfaceDisplayUpdate()
 
         displayCharPositionWrite ( 6,1 );
         
-        if ( IntDelay() == SHORT_MODE ) {
+        if ( currentDelay == SHORT_DELAY ) {
             displayStringWrite( "SHORT " );
-        else if ( IntDelay() == MEDIUM_MODE ) {
+        } else if ( currentDelay == MEDIUM_DELAY ) {
             displayStringWrite( "MEDIUM" );
         } else {
             displayStringWrite( "LONG" );
         }
 
-    } else {
-        accumulatedDisplayTime =
-            accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
-    } 
+        // } else {
+        //     accumulatedDisplayTime =
+        //         accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
+        // } 
+    }
 }

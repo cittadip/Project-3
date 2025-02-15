@@ -1,13 +1,13 @@
 //=====[Libraries]=============================================================
 
-#include "Safe_Car_System.h"
+#include "safe_car_system.h"
 
 //=====[Main function, the program entry point after power on or reset]========
 
 int main()
 {
-   SafeCarSystemInit();
+   safeCarSystemInit();
     while (true) {
-        SafeCarSytemUpdate();
+        safeCarSystemUpdate();
     }
 }

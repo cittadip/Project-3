@@ -9,6 +9,7 @@
 #include "siren.h"
 #include "user_interface.h"
 #include "wiper_mode.h"
+#include "safe_car_system.h"
 
 
 //=====[Declaration of private defines]========================================
@@ -27,24 +28,20 @@
 
 //=====[Implementations of public functions]===================================
 
-void SafeCarSystemInit()
+void safeCarSystemInit()
 {
     userInterfaceInit();
     pcSerialComInit();
     servoInit();
 }
 
-void SafeCarSystemUpdate()
+void safeCarSystemUpdate()
 {
-    SERVO_LOW_MODE();
-    /*userInterfaceUpdate();
-    fireAlarmUpdate();    
+    userInterfaceUpdate();
     pcSerialComUpdate();
-    eventLogUpdate();
-    if 
-    WiperModeState():
+    WiperModeState();
     INT_State();
-    delay(SYSTEM_TIME_INCREMENT_MS);*/
+    delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
 //=====[Implementations of private functions]==================================

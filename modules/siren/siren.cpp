@@ -2,10 +2,8 @@
 
 #include "mbed.h"
 #include "arm_book_lib.h"
-
 #include "siren.h"
 
-#include "smart_home_system.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -13,7 +11,7 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalOut sirenPin(PE_10);
+DigitalInOut sirenPin(PE_10);
 
 //=====[Declaration of external public global variables]=======================
 
@@ -30,7 +28,6 @@ static bool sirenState = OFF;
 void sirenInit()
 {
     sirenPin = ON;
-
     sirenPin.mode(OpenDrain);
     sirenPin.input();
 }
@@ -48,17 +45,17 @@ void sirenStateWrite( bool state )
 //this might be able to go away? - read over to understand what its doing and check to see if its used anywhere else in your system
 void sirenUpdate( int strobeTime )
 {
-    static int accumulatedTimeAlarm = 0;
-    accumulatedTimeAlarm = accumulatedTimeAlarm + SYSTEM_TIME_INCREMENT_MS;
+    // static int accumulatedTimeAlarm = 0;
+    // accumulatedTimeAlarm = accumulatedTimeAlarm + SYSTEM_TIME_INCREMENT_MS;
     
-    if( sirenState ) {
-        if( accumulatedTimeAlarm >= strobeTime ) {
-                accumulatedTimeAlarm = 0;
-                sirenPin= !sirenPin;
-        }
-    } else {
-        sirenPin = ON;
-    }
+    // if( sirenState ) {
+    //     if( accumulatedTimeAlarm >= strobeTime ) {
+    //             accumulatedTimeAlarm = 0;
+    //             sirenPin= !sirenPin;
+    //     }
+    // } else {
+    //     sirenPin = ON;
+    // }
 }
 
 void sirenON(){

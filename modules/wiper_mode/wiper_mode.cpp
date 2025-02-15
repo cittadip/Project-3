@@ -2,7 +2,7 @@
 #include "arm_book_lib.h"
 #include "mbed.h"
 #include "servo.h"
-#include "Safe_Car_System.h"
+#include "safe_car_system.h"
 
 
 #define Q1_LIMIT 2.5
@@ -13,13 +13,6 @@
 #define ONE_THIRED .3333
 #define TWO_THIRED .6666
 
-#define OFF_MODE 3
-#define INT_MODE 4
-#define LOW_MODE 5
-#define HIGH_MODE 5
-#define SHORT_DELAY 1000
-#define MEDIUM_DELAY 4000
-#define LONG_DELAY 10000
 
 #define DELAY 1000
 

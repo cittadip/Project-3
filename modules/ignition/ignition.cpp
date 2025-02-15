@@ -69,6 +69,20 @@ void inputsInit() {
   ignitionButton.mode(PullDown);
 }
 
+bool getDriverPresent(){
+    return driverPresent;
+}
+bool getPassengerPresent(){
+    return passengerPresent;
+}
+bool getDriverSeatbelt(){
+    return driverSeatbelt;
+}
+bool getPassengerSeatbelt(){
+    return passengerSeatbelt;
+}
+
+
 void outputsInit() {
   //**sirenPin.mode(OpenDrain);
   //**sirenPin.input();
