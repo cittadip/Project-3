@@ -5,6 +5,8 @@
 #include "ignition.h"
 #include "pc_serial_com.h"
 
+//uart macros
+
 
 //=====[Declaration of private defines]========================================
 
@@ -13,6 +15,43 @@
 //=====[Declaration and initialization of public global objects]===============
 
 UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
+// UART interface for communication with a computer or external device
+// USBTX and USBRX represent transmit and receive pins, respectively
+// 115200 is the baud rate for serial communication
+
+
+/*
+a list of UART serial prints depending on the situation the car is in
+@param cmd the uart that is selected to be printed
+*/
+void uartCommands(int cmd) {
+  switch (cmd) {
+  case UART_INTRO_KEY:
+    uartUsb.write("\nWelcome to enhanced alarm system model 218-W24", 46);
+    break;
+
+  case UART_ENGINE_KEY:
+    uartUsb.write("\nEngine started.", 15);
+    break;
+  case UART_ERROR_KEY:
+    uartUsb.write("\nIgnition inhibited", 19);
+    uartUsb.write("\nReasons:", 9);
+
+    if (!driverPresent) {
+      uartUsb.write("\nDriver not present.", 20);
+    }
+    if (!passengerPresent) {
+      uartUsb.write("\nPassenger not present.", 23);
+    }
+    if (!driverSeatbelt) {
+      uartUsb.write("\nDriver Seatbelt not fastened.", 30);
+    }
+    if (!passengerSeatbelt) {
+      uartUsb.write("\nPassenger Seatbelt not fastened.", 33);
+    }
+    break;
+  }
+}
 
 //=====[Declaration of external public global variables]=======================
 

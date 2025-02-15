@@ -9,14 +9,17 @@
 #include "arm_book_lib.h"
 #include "mbed.h"
 #include <string>
+#include "ignition.h"
+#include "siren.h"
+#include "pc_serial_com.h"
 
 
 //=====[Defines]===============================================================
 
 //uart macros
-#define UART_INTRO_KEY 0
-#define UART_ENGINE_KEY 1
-#define UART_ERROR_KEY 2
+//#define UART_INTRO_KEY 0
+//#define UART_ENGINE_KEY 1
+//#define UART_ERROR_KEY 2
 
 
 //=====[Declaration and initialization of public global objects]===============
@@ -30,14 +33,10 @@ AnalogIn wiperModeSelector(A0);
 AnalogIn wiperDelaySelector(A1);
 
 DigitalOut greenIndicator(LED1);
-DigitalInOut sirenPin(PE_10);
 DigitalOut blueIndicator(LED2);
 
 
-UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
-// UART interface for communication with a computer or external device
-// USBTX and USBRX represent transmit and receive pins, respectively
-// 115200 is the baud rate for serial communication
+
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -58,7 +57,7 @@ bool waitForRelease = false;
 //=====[Declarations (prototypes) of public functions]=========================
 
 void drivingState();
-void uartCommands(int cmd); 
+
 
 //=====[Implementations of public functions]===================================
 
@@ -71,8 +70,8 @@ void inputsInit() {
 }
 
 void outputsInit() {
-  sirenPin.mode(OpenDrain);
-  sirenPin.input();
+  //**sirenPin.mode(OpenDrain);
+  //**sirenPin.input();
 
   blueIndicator = OFF;  // Blue LED: Indicates engine running
   greenIndicator = OFF; // Green LED: Indicates safe state for operation
@@ -107,7 +106,7 @@ void ignitionCase() {
     // Check if all required conditions are met for engine start
     if (driverPresent && passengerPresent && driverSeatbelt &&
         passengerSeatbelt) {
-      uartCommands(UART_ENGINE_KEY);
+        uartCommands(UART_ENGINE_KEY);
 
       // this loop does 1 loop of all the functions that would occur if when the
       // engine is on before checking if the button was pushes and released
@@ -117,7 +116,7 @@ void ignitionCase() {
         greenIndicator = OFF;
         //  keep on blue led
         blueIndicator = ON;
-        sirenPin.input();
+        sirenOFF();
         //  also check for headlights settings here
         ignitionState();
         // headlightState();
@@ -134,8 +133,7 @@ void ignitionCase() {
       // The alarm will keep sounding until the engine is properly
       // started eg. passenger/driver present and seatbelts on
       do {
-        sirenPin.output();
-        sirenPin = LOW; // Activate siren signal
+        sirenON();
         drivingState();
       } while (!(driverPresent && passengerPresent && driverSeatbelt &&
                  passengerSeatbelt));
@@ -154,38 +152,6 @@ void driverIntroduction() {
   }
 }
 
-/*
-a list of UART serial prints depending on the situation the car is in
-@param cmd the uart that is selected to be printed
-*/
-void uartCommands(int cmd) {
-  switch (cmd) {
-  case UART_INTRO_KEY:
-    uartUsb.write("\nWelcome to enhanced alarm system model 218-W24", 46);
-    break;
-
-  case UART_ENGINE_KEY:
-    uartUsb.write("\nEngine started.", 15);
-    break;
-  case UART_ERROR_KEY:
-    uartUsb.write("\nIgnition inhibited", 19);
-    uartUsb.write("\nReasons:", 9);
-
-    if (!driverPresent) {
-      uartUsb.write("\nDriver not present.", 20);
-    }
-    if (!passengerPresent) {
-      uartUsb.write("\nPassenger not present.", 23);
-    }
-    if (!driverSeatbelt) {
-      uartUsb.write("\nDriver Seatbelt not fastened.", 30);
-    }
-    if (!passengerSeatbelt) {
-      uartUsb.write("\nPassenger Seatbelt not fastened.", 33);
-    }
-    break;
-  }
-}
 
 /*
 tells the program what state the code is in; if green led should be on/off

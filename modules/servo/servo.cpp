@@ -29,11 +29,14 @@ void servoInit(){
 
 void SERVO_OFF_MODE() {
   servo.period(STOP_PERIOD);
+  delay(SMALL_DELAY)
   servo.write(DUTY_STOP);
+   delay(LOW_TURN_TIME)
   
 }
 void SERVO_INT_MODE() {
   servo.write(DUTY_LOW);
+   delay(LOW_TURN_TIME)
   servo.write(DUTY_BACK);
 }
 void SERVO_LOW_MODE() {
@@ -44,6 +47,7 @@ void SERVO_LOW_MODE() {
 }
 void SERVO_HIGH_MODE() {
   servo.write(DUTY_HIGH);
+  delay(LOW_TURN_TIME);
   servo.write(DUTY_BACK);
 }
 

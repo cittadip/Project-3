@@ -2,7 +2,6 @@
 
 #include "arm_book_lib.h"
 #include "mbed.h"
-
 #include "display.h"
 #include "ignition.h"
 #include "pc_serial_com.h"

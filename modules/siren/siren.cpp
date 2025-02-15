@@ -30,6 +30,9 @@ static bool sirenState = OFF;
 void sirenInit()
 {
     sirenPin = ON;
+
+    sirenPin.mode(OpenDrain);
+    sirenPin.input();
 }
 
 bool sirenStateRead()
@@ -42,6 +45,7 @@ void sirenStateWrite( bool state )
     sirenState = state;
 }
 
+//this might be able to go away? - read over to understand what its doing and check to see if its used anywhere else in your system
 void sirenUpdate( int strobeTime )
 {
     static int accumulatedTimeAlarm = 0;
@@ -55,6 +59,16 @@ void sirenUpdate( int strobeTime )
     } else {
         sirenPin = ON;
     }
+}
+
+void sirenON(){
+    sirenPin.output();
+    sirenPin = LOW;
+}
+
+void sirenOFF(){
+    sirenPin.input();
+    sirenPin = HIGH;
 }
 
 //=====[Implementations of private functions]==================================

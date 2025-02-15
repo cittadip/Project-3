@@ -13,7 +13,8 @@ void sirenInit();
 bool sirenStateRead();
 void sirenStateWrite( bool state );
 void sirenUpdate( int strobeTime );
-
+void sirenON();
+void sirenOFF();
 //=====[#include guards - end]=================================================
 
 #endif // _SIREN_H_
