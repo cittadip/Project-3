@@ -9,9 +9,7 @@ blue LED turns on instead. If one or more of those conditions are not true then 
 to turn on the ignition again. If the driver pushes the ignition button while the ignition is on, it will turn off. The wiper system allows the driver to have control over the wipers in two ways. The first feature the driver has control over is
 the speed of the wipers, the wiper can either be high, low, intermediate, or off. Then, the driver can decide a delay time of either short, medium, or long. A display will show the driver what mode the windshield wipers are in. 
 
-We decided to use a continuous servo for our system. This was because with the continuous servo we could change the speed of the motor, which we were unable to do with the positional motor. With the continuous motor we were also able to 
-change the delay time in between cycles. So, we picked this motor because we were able to implement both requirements with it. 
-
+We decided to use a positional motor for our windshield wipers. We decided to use this motor because its movements were more accurate and it could reach the degrees specified with more precision. Due to the requirement of the wipers having to go 67 degrees this motor made more sense. 
 
 ## Project Behavior Table 
 
