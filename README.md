@@ -27,5 +27,6 @@ We decided to use a positional motor for our windshield wipers. We decided to us
 
 ## Modular Diagram of Code 
 
-<img width="697" alt="image" src="https://github.com/user-attachments/assets/87c83584-8f7b-437b-b36f-a6e8001e1db8" />
+<img width="713" alt="image" src="https://github.com/user-attachments/assets/4858214e-6d6e-422a-aa82-912ae699850e" />
+
 
