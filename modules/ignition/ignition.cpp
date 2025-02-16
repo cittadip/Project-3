@@ -26,8 +26,8 @@
 
 DigitalIn driverPresent(D14);
 DigitalIn passengerPresent(D15);
-DigitalIn driverSeatbelt(D13);
-DigitalIn passengerSeatbelt(D12);
+DigitalIn driverSeatbelt(D10);
+DigitalIn passengerSeatbelt(D11);
 DigitalIn ignitionButton(BUTTON1);
 AnalogIn wiperModeSelector(A0);
 AnalogIn wiperDelaySelector(A1);
@@ -87,6 +87,8 @@ void outputsInit() {
   greenIndicator = OFF; // Green LED: Indicates safe state for operation
 }
 
+
+
 /*
 Tracks the falling edge of the ignition button
 Allows for the ignition button to turn the engine off on release
@@ -114,8 +116,7 @@ void ignitionCase() {
   ignitionState();
   if (ignitionButtonState) {
     // Check if all required conditions are met for engine start
-    if (driverPresent && passengerPresent && driverSeatbelt &&
-        passengerSeatbelt) {
+    if (driverPresent && passengerPresent && driverSeatbelt && passengerSeatbelt) {
         uartCommands(UART_ENGINE_KEY);
 
       // this loop does 1 loop of all the functions that would occur if when the
@@ -174,15 +175,14 @@ is in a safe state to operate.
 */
 void drivingState() {
   driverIntroduction();
-  if (driverPresent && passengerPresent && driverSeatbelt &&
-      passengerSeatbelt) {
+  if (driverPresent && passengerPresent && driverSeatbelt && passengerSeatbelt) {
     greenIndicator = ON; // All conditions met, safe state
   } else {
     greenIndicator = OFF; // One or more conditions not met, unsafe state
   }
 }
 
-/*
+
 bool isignitionon() {
     if (blueIndicator == ON){
     return true;
@@ -191,4 +191,3 @@ bool isignitionon() {
     }
 }
 
-*/

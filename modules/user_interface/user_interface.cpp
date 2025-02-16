@@ -52,7 +52,7 @@ static void userInterfaceDisplayInit()
     //displayInit(); idk what this is 
      
     displayCharPositionWrite ( 0,0 );
-    displayStringWrite( "Mode:" );
+    displayStringWrite( "Mode:  " );
 
     displayCharPositionWrite ( 0,1 );
     displayStringWrite( "Delay:" );
@@ -83,23 +83,23 @@ static void userInterfaceDisplayUpdate()
         currentDelay = IntDelay();
 
         if ( currentMode == OFF_MODE ) {
-            displayStringWrite( "OFF" );
+            displayStringWrite( "OFF   " );
         } else if ( currentMode == INT_MODE ) {
-            displayStringWrite( "INT" );
+            displayStringWrite( "INT   " );
         } else if ( currentMode == LOW_MODE ) {
-            displayStringWrite( "LOW" );
+            displayStringWrite( "LOW   " );
         } else {
-            displayStringWrite( "HIGH" );
+            displayStringWrite( "HIGH  " );
         }
 
         displayCharPositionWrite ( 6,1 );
         
         if ( currentDelay == SHORT_DELAY ) {
-            displayStringWrite( "SHORT " );
+            displayStringWrite( "SHORT  " );
         } else if ( currentDelay == MEDIUM_DELAY ) {
             displayStringWrite( "MEDIUM" );
         } else {
-            displayStringWrite( "LONG" );
+            displayStringWrite( "LONG  " );
         }
 
         // } else {

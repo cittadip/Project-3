@@ -66,6 +66,7 @@ DigitalOut displayD4( D4 );
 DigitalOut displayD5( D5 );
 DigitalOut displayD6( D6 );
 DigitalOut displayD7( D7 );
+
 DigitalOut displayRs( D8 );
 DigitalOut displayEn( D9 );
 

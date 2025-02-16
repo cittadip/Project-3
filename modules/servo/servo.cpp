@@ -3,7 +3,7 @@
 #include "arm_book_lib.h"
 #include "mbed.h"
 
-#define PERIOD 2000
+#define PERIOD 0.02
 #define STOP_PERIOD 1.5
 #define DUTY_STOP 0.075
 #define DUTY_HIGH 0.065
@@ -18,17 +18,17 @@
 // #define LOW_TURN_TIME 6000
 // #define LONG_DELAY 8000
 
-
-
-
 PwmOut servo(PF_9);
+
+
+
 void servoInit(){
     servo.period(PERIOD);
 }
 
 
 void SERVO_OFF_MODE() {
-    servo.period(STOP_PERIOD);
+    // servo.period(STOP_PERIOD);
     delay(SMALL_DELAY);
     servo.write(DUTY_STOP);
     delay(LOW_TURN_TIME);
