@@ -48,16 +48,12 @@ bool ignitionButtonState = OFF; //******* try ON first (but also change the vals
 float potentiometerReading = 0.0;
 float potentiometerReadingScaled = 0.0;
 
-float lightReading = 0.0;
 
 // variables used in tracking the falling edge of the ignition button
 bool ignitionPrevious = ON;
 bool waitForRelease = false;
 
 //=====[Declarations (prototypes) of public functions]=========================
-
-void drivingState();
-
 
 //=====[Implementations of public functions]===================================
 
@@ -96,14 +92,14 @@ Tracks the falling edge of the ignition button
 Allows for the ignition button to turn the engine off on release
 */
 void ignitionState() {
-  if (!ignitionButton && ignitionPrevious) {
-    if (!waitForRelease) {
+  if (ignitionButton && !ignitionPrevious) {
+    if (waitForRelease) {
       ignitionButtonState = !ignitionButtonState;
-      waitForRelease = true;
+      waitForRelease = false;
     }
   }
-  if (ignitionButton && !ignitionPrevious) {
-    waitForRelease = false;
+  if (!ignitionButton && ignitionPrevious) {
+    waitForRelease = true;
   }
   ignitionPrevious = ignitionButton;
 }
@@ -116,7 +112,7 @@ start the engine if all buttons are pressed the engine will start
 void ignitionCase() {
   // maybe change the if statement to look for a button release
   ignitionState();
-  if (!ignitionButtonState) {
+  if (ignitionButtonState) {
     // Check if all required conditions are met for engine start
     if (driverPresent && passengerPresent && driverSeatbelt &&
         passengerSeatbelt) {
@@ -134,7 +130,7 @@ void ignitionCase() {
         //  also check for headlights settings here
         ignitionState();
         // headlightState();
-      } while (!ignitionButtonState);
+      } while (ignitionButtonState);
 
       // if engine is off the headlights and blue indicator should be turned off
       blueIndicator = OFF;
@@ -151,6 +147,7 @@ void ignitionCase() {
         drivingState();
       } while (!(driverPresent && passengerPresent && driverSeatbelt &&
                  passengerSeatbelt));
+        ignitionButtonState = OFF; // New
     }
   }
 }
@@ -185,6 +182,7 @@ void drivingState() {
   }
 }
 
+/*
 bool isignitionon() {
     if (blueIndicator == ON){
     return true;
@@ -193,3 +191,4 @@ bool isignitionon() {
     }
 }
 
+*/

@@ -33,6 +33,8 @@ void safeCarSystemInit()
     userInterfaceInit();
     pcSerialComInit();
     servoInit();
+    inputsInit(); // New Change
+    outputsInit(); // New Change
 }
 
 void safeCarSystemUpdate()
@@ -41,6 +43,9 @@ void safeCarSystemUpdate()
     pcSerialComUpdate();
     WiperModeState();
     INT_State();
+
+    ignitionCase(); //New Change 
+    drivingState(); // New Change
     delay(SYSTEM_TIME_INCREMENT_MS);
 }
 
