@@ -17,9 +17,9 @@
 //=====[Defines]===============================================================
 
 //uart macros
-//#define UART_INTRO_KEY 0
-//#define UART_ENGINE_KEY 1
-//#define UART_ERROR_KEY 2
+#define UART_INTRO_KEY 0
+#define UART_ENGINE_KEY 1
+#define UART_ERROR_KEY 2
 
 
 //=====[Declaration and initialization of public global objects]===============

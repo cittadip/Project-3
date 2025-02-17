@@ -59,12 +59,12 @@ a list of UART serial prints depending on the situation the car is in
 */
 void pcSerialComInit()
 {
-    // availableCommands();
+    availableCommands();
 }
 
 void uartCommands(int cmd) 
 {
-  /*switch (cmd) {
+  switch (cmd) {
   case UART_INTRO_KEY:
     uartUsb.write("\nWelcome to enhanced alarm system model 218-W24", 46);
     break;
@@ -89,10 +89,24 @@ void uartCommands(int cmd)
       uartUsb.write("\nPassenger Seatbelt not fastened.", 33);
     }
     break;
-  }*/
+  }
 }
 
-
+static void availableCommands()
+{
+    pcSerialComStringWrite( "Available commands:\r\n" );
+    pcSerialComStringWrite( "Press '1' to get the alarm state\r\n" );
+    pcSerialComStringWrite( "Press '2' to get the gas detector state\r\n" );
+    pcSerialComStringWrite( "Press '3' to get the over temperature detector state\r\n" );
+    pcSerialComStringWrite( "Press '4' to enter the code to deactivate the alarm\r\n" );
+    pcSerialComStringWrite( "Press '5' to enter a new code to deactivate the alarm\r\n" );
+    pcSerialComStringWrite( "Press 'f' or 'F' to get lm35 reading in Fahrenheit\r\n" );
+    pcSerialComStringWrite( "Press 'c' or 'C' to get lm35 reading in Celsius\r\n" );
+    pcSerialComStringWrite( "Press 's' or 'S' to set the date and time\r\n" );
+    pcSerialComStringWrite( "Press 't' or 'T' to get the date and time\r\n" );
+    pcSerialComStringWrite( "Press 'e' or 'E' to get the stored events\r\n" );
+    pcSerialComStringWrite( "\r\n" );
+}
 
 
 char pcSerialComCharRead()
@@ -108,7 +122,7 @@ void pcSerialComStringWrite( const char* str )
 
 void pcSerialComUpdate()
 {
-    /*char receivedChar = pcSerialComCharRead();
+    char receivedChar = pcSerialComCharRead();
     if( receivedChar != '\0' ) {
         switch ( pcSerialComMode ) {
             case PC_SERIAL_COMMANDS:
@@ -126,7 +140,7 @@ void pcSerialComUpdate()
                 pcSerialComMode = PC_SERIAL_COMMANDS;
             break;
         }
-    }//*/    
+    }   
 }
 
 bool pcSerialComCodeCompleteRead()

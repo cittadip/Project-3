@@ -45,7 +45,7 @@ int IntDelay() {
 
   if (val2 >= TWO_THIRED) {
     state = SHORT_DELAY;
-  } else if (val2 > TWO_THIRED && val2 <= ONE_THIRED) {
+  } else if (val2 < TWO_THIRED && val2 >= ONE_THIRED) {
     state = MEDIUM_DELAY;
   } else {
     state = LONG_DELAY;
