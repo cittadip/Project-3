@@ -41,8 +41,8 @@ void safeCarSystemUpdate()
 {
     userInterfaceUpdate();
     pcSerialComUpdate();
-    // WiperModeState();
-    // INT_State();
+    //WiperModeState();
+    //INT_State();
 
     ignitionCase(); //New Change 
     drivingState(); // New Change

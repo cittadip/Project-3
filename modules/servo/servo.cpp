@@ -10,6 +10,8 @@
 #define DUTY_LOW 0.070
 #define DUTY_BACK 0.080
 
+#define DUTY_ZERO 0.025
+
 #define SMALL_DELAY 3000
 #define MEDIUM_DELAY 6000
 #define LONG_DELAY 8000
@@ -24,11 +26,11 @@ PwmOut servo(PF_9);
 
 void servoInit(){
     servo.period(PERIOD);
+    servo.write(DUTY_ZERO);
 }
 
 
 void SERVO_OFF_MODE() {
-    // servo.period(STOP_PERIOD);
     delay(SMALL_DELAY);
     servo.write(DUTY_STOP);
     delay(LOW_TURN_TIME);

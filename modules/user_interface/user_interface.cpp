@@ -49,7 +49,7 @@ void userInterfaceUpdate()
 //=====[Implementations of private functions]==================================
 static void userInterfaceDisplayInit()
 {
-    //displayInit(); idk what this is 
+    displayInit(); 
      
     displayCharPositionWrite ( 0,0 );
     displayStringWrite( "Mode:  " );
@@ -84,27 +84,31 @@ static void userInterfaceDisplayUpdate()
 
         if ( currentMode == OFF_MODE ) {
             displayStringWrite( "OFF   " );
+            displayCharPositionWrite ( 6,1 );
+            displayStringWrite( "NO DELAY " );
         } else if ( currentMode == INT_MODE ) {
+            
             displayStringWrite( "INT   " );
+             displayCharPositionWrite ( 6,1 );
+            if ( currentDelay == SHORT_DELAY ) {
+            displayStringWrite( "SHORT     " );
+            } else if ( currentDelay == MEDIUM_DELAY ) {
+                displayStringWrite( "MEDIUM     " );
+            } else {
+                displayStringWrite( "LONG         " );
+                }
         } else if ( currentMode == LOW_MODE ) {
             displayStringWrite( "LOW   " );
+            displayCharPositionWrite ( 6,1 );
+            displayStringWrite( "NO DELAY " );
         } else {
             displayStringWrite( "HIGH  " );
+            displayCharPositionWrite ( 6,1 );
+            displayStringWrite( "NO DELAY " );
         }
 
-        displayCharPositionWrite ( 6,1 );
-        
-        if ( currentDelay == SHORT_DELAY ) {
-            displayStringWrite( "SHORT  " );
-        } else if ( currentDelay == MEDIUM_DELAY ) {
-            displayStringWrite( "MEDIUM" );
-        } else {
-            displayStringWrite( "LONG  " );
-        }
-
-        // } else {
-        //     accumulatedDisplayTime =
-        //         accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
-        // } 
+         } else {
+             accumulatedDisplayTime =
+                 accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
+         } 
     }
-}
