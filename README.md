@@ -3,7 +3,7 @@
 ## System Behavior Description 
 Phillip Cittadino and Catie Amirault                                                                                                                                       
 
-This system takes a driver's education car and implements a windshield wipers system system that gives the user the option to pick the speed of the wipers and the delay time of the wipers. The car must abide by the New York State Department of 
+This system takes a driver's education car and implements a windshield wipers system that gives the user the option to pick the speed of the wipers and the delay time of the wipers. The car must abide by the New York State Department of 
 Motor Vehicles rules which states that the ignition can only turn on when both the passenger and the driver are sitting down and both seatbelts are fastened. A green LED will turn on when both conditions are met and when the ignition is on a 
 blue LED turns on instead. If one or more of those conditions are not true then ignition is not possible and an alarm will sound. The driver will get an error message explaining why the car will not turn on and try to fix the problem and attempt
 to turn on the ignition again. If the driver pushes the ignition button while the ignition is on, it will turn off. The wiper system allows the driver to have control over the wipers in two ways. The first feature the driver has control over is
