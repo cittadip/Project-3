@@ -34,15 +34,21 @@ void set_servo_step_time();
 void servoInit(){
     servo.period(PERIOD);
     servo.write(DUTY_ZERO);
+<<<<<<< HEAD
     servo_update_time = 0;
     angle = 0;
     servo_step_time = 10;
+=======
+>>>>>>> 9f36f9a79a92476e9b886792d5a51f00e5f6d7fd
 }
 
 
 void SERVO_OFF_MODE() {
+<<<<<<< HEAD
     servo_mode = OFF_M;
     /*servo.write(DUTY_STOP);
+=======
+>>>>>>> 9f36f9a79a92476e9b886792d5a51f00e5f6d7fd
     delay(SMALL_DELAY);
     servo.write(DUTY_STOP);
     delay(LOW_TURN_TIME);*/
