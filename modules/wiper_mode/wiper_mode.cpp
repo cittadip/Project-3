@@ -31,6 +31,7 @@ int WiperMode() {
   } else if (val > Q2_LIMIT && val <= Q3_LIMIT) {
     state = INT_MODE;
   } else {
+    SERVO_HIGH_MODE();
     state = HIGH_MODE;
   }
 
