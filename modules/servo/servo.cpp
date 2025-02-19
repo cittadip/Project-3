@@ -13,8 +13,8 @@
 #define DUTY_BACK 0.080
 
 
-#define DUTY_ZERO 0.025
-#define DUTY_67 0.068
+#define DUTY_ZERO 25//25
+#define DUTY_67 80//68
 
 
 #define SMALL_DELAY 3000
@@ -23,14 +23,16 @@
 
 
 #define LOW_TURN_TIME 3000
-#define SERVO_STEP_TIME 40
-float angle_increment;
+#define SERVO_STEP_TIME 50
+int angle_increment;
+int angle_incrament_two;
+bool went_down;
+bool went_up;
 
 
-
+// UnbufferedSerial uartUsb(USBTX, USBRX, 115200);
 
 PwmOut servo(PF_9);
-
 
 int servo_update_time;
 float angle;
@@ -38,116 +40,151 @@ int servo_step_time;
 ServoMode servo_mode;
 
 
-
-
 void servoInit(){
    servo.period(PERIOD);
    servo.write(DUTY_ZERO);
    servo_update_time = 0;
-   angle = 0.025;
+   angle = DUTY_ZERO;
    servo_step_time = 10;
 }
 
-
-
-
 void SERVO_OFF_MODE() {
    servo_mode = OFF_M;
-   /*servo.write(DUTY_STOP);
-   delay(SMALL_DELAY);
-   servo.write(DUTY_STOP);
-   delay(LOW_TURN_TIME);*/
 }
 
-
-/*void SERVO_INT_MODE() {  //30 rev
+void SERVO_INT_MODE() {  //30 rev
    servo_mode = INT_M;
-   servo.write(DUTY_LOW);
-   delay(LOW_TURN_TIME);
-   servo.write(DUTY_BACK);
-   delay(LOW_TURN_TIME);
-}*/
-
+}
 
 void SERVO_LOW_MODE() {  //30 rev
    servo_mode = LOW_M;
-   /*servo.write(DUTY_LOW); 
-   delay(LOW_TURN_TIME);
-   servo.write(DUTY_BACK);
-   delay(LOW_TURN_TIME);*/
 }
 void SERVO_HIGH_MODE() {
    servo_mode = HIGH_M;
-   /*servo.write(0.025);
-   delay(750);
-   servo.write(0.057);
-   delay(750);*/
 }
-
 
 void SERVO_MODE_OFF(){
    servo_mode = OFF_M;
-   /*servo.period(PERIOD);
-   servo.write(DUTY_LOW);*/
 }
 
 
 
 
 void INT_3_MODE() {
-   //delay(SMALL_DELAY);
    servo_mode = INT_3_M;
 }
 void INT_6_MODE() {
-   //delay(MEDIUM_DELAY);
    servo_mode = INT_6_M;
 }
 void INT_8_MODE() {
-   //delay(LONG_DELAY);
    servo_mode = INT_8_M;
 }
 
+int getAngle(){
+    return angle;
+}
 
 void set_servo_step_time() {
    switch(servo_mode){
        case OFF_M :
-           angle_increment = DUTY_ZERO;
            break;
        //case INT_M :
-
-
            //break;
        case HIGH_M :
-           angle_increment = 0;
+           angle_increment = 3;
            break;
        case LOW_M :
-           angle_increment = .75;
+           angle_increment = 1;
            break;
        case INT_3_M:
+            angle_increment = 1;
          
            break;
        case INT_6_M:
+            angle_increment = 1;
           
            break;
        case INT_8_M:
-          
+            angle_increment = 1;
            break;
    }
 }
 
 
-
+went_down = false;
+went_up = false;
+angle_incrament_two = 0;
 
 void servo_update_function(){
-   set_servo_step_time();
-   servo_update_time = servo_update_time + SYSTEM_TIME_INCREMENT_MS ;
-   if (servo_update_time >= servo_step_time){    //only move servo once per servo_step_time (must be > 20ms)
-       servo.write(angle);
-       if (angle <= DUTY_67){
-        angle = angle+(0.001) ;                                  //Increment position by 2 degrees (you need to convert this to duty cycle increment)
-        servo_update_time = 0 ;
-        }
-   }
+    set_servo_step_time();
+
+    if (servo_mode != OFF_M) {
+
+        //increment servo update time
+        servo_update_time = servo_update_time + SYSTEM_TIME_INCREMENT_MS ;
+
+
+        if (servo_update_time >= SERVO_STEP_TIME){    //only move servo once per servo_step_time (must be > 20ms)
+                servo.write(angle/1000);
+                went_up = true;
+
+                // if (servo_mode == INT_3_M) {
+                //         delay(3000);
+                //     } if (servo_mode == INT_6_M) {
+                //         delay(6000);
+                //     } if (servo_mode == INT_8_M) {
+                //         delay(8000);
+                //     }                //increse angle if too low
+                if (angle <= DUTY_67){
+                    angle = angle + angle_increment;//Increment position by 2 degrees 
+                //(you need to convert this to duty cycle increment)
+                    went_down = true;
+
+                //decrese angle if too high
+                } else if (angle > DUTY_67) {
+                    angle = angle - DUTY_ZERO;//angle + angle_increment;
+
+                //in case of error reset system
+                } else {
+                    angle = DUTY_ZERO;
+                }
+                if (went_down == true && went_up == true) {
+                    if (SERVO_STEP_TIME>=SYSTEM_TIME_INCREMENT_MS){
+                        went_down = false;
+                        went_up = false;
+                    }
+                    else{
+                        servo.write(angle/1000);
+                        went_up = true;}
+
+                // if (servo_mode == INT_3_M) {
+                //         delay(3000);
+                //     } if (servo_mode == INT_6_M) {
+                //         delay(6000);
+                //     } if (servo_mode == INT_8_M) {
+                //         delay(8000);
+                //     }                //increse angle if too low
+                        if (angle <= DUTY_67){
+                            angle = angle + angle_increment;//Increment position by 2 degrees 
+                //(you need to convert this to duty cycle increment)
+                             went_down = true;
+
+                //decrese angle if too high
+                        } else if (angle > DUTY_67) {
+                            angle = angle - DUTY_ZERO;//angle + angle_increment;
+
+                //in case of error reset system
+                        } else {
+                            angle = DUTY_ZERO;
+                        }
+                    }
+                //reset servo update time
+                servo_update_time = 0;
+                }
+        
+    } else { // if it is off set pos to zero
+        servo.write(DUTY_ZERO);
+    }
 }
 
 

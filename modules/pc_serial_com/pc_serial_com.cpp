@@ -4,6 +4,7 @@
 #include "arm_book_lib.h"
 #include "ignition.h"
 #include "pc_serial_com.h"
+#include "servo.h"
 
 //uart macros
 
@@ -43,6 +44,7 @@ char pcSerialComCharRead();
 void pcSerialComStringWrite( const char* str );
 void pcSerialComUpdate();
 void uartCommands(int cmd);
+void writeAngle();
 
 
 //=====[Implementations of public functions ===================================
@@ -88,6 +90,7 @@ void uartCommands(int cmd)
     if (!getPassengerSeatbelt()) {
       uartUsb.write("\nPassenger Seatbelt not fastened.", 33);
     }
+
     break;
   }
 }
@@ -123,6 +126,7 @@ void pcSerialComStringWrite( const char* str )
 void pcSerialComUpdate()
 {
     char receivedChar = pcSerialComCharRead();
+    // writeAngle();
     if( receivedChar != '\0' ) {
         switch ( pcSerialComMode ) {
             case PC_SERIAL_COMMANDS:
@@ -142,7 +146,24 @@ void pcSerialComUpdate()
         }
     }   
 }
+/*
+            sprintf ( str, "Temperature: %.2f \xB0 F\r\n", 
+                celsiusToFahrenheit( 
+                    analogReadingScaledWithTheLM35Formula (
+                        potentiometer.read() ) ) );
+            stringLength = strlen(str);
+            uartUsb.write( str, stringLength );
+*/
+void writeAngle() {
+    char str[100];
+    int angle = getAngle();
+    int stringLength;
 
+    sprintf ( str, "%.2d\r\n", angle);
+    stringLength = strlen(str);
+    uartUsb.write( str, stringLength );
+
+}
 bool pcSerialComCodeCompleteRead()
 {
     return codeComplete;

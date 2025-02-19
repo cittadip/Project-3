@@ -148,12 +148,21 @@ void ignitionCase() {
 
       // The alarm will keep sounding until the engine is properly
       // started eg. passenger/driver present and seatbelts on
+      if (!(driverPresent && passengerPresent && driverSeatbelt &&
+                 passengerSeatbelt)){
+        sirenON();
+        drivingState();}
+      else {
+            ignitionButtonState = OFF;
+        }
+      
+    /*  
       do {
         sirenON();
         drivingState();
       } while (!(driverPresent && passengerPresent && driverSeatbelt &&
                  passengerSeatbelt));
-        ignitionButtonState = OFF; // New
+        ignitionButtonState = OFF; // New */
     }
   }
 

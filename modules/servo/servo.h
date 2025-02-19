@@ -23,7 +23,7 @@ void set_servo_step_time();
 
 typedef enum {
     LOW_M,
-    //INT_M,
+    INT_M,
     HIGH_M,
     OFF_M,
     INT_3_M,
@@ -34,6 +34,8 @@ void setServoMode(ServoMode mode);
 void moveServoTo(float targetAngle, int stepDelay);
 void servoControl();
 void servo_update_function();
+int getAngle();
+
 
 //=====[#include guards - end]=================================================
 
