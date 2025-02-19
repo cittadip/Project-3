@@ -13,7 +13,6 @@
 #include "siren.h"
 #include "pc_serial_com.h"
 
-
 //=====[Defines]===============================================================
 
 //uart macros
@@ -122,7 +121,7 @@ void ignitionCase() {
       // this loop does 1 loop of all the functions that would occur if when the
       // engine is on before checking if the button was pushes and released
       // again
-      do {
+     /* do {
         // Turn off the green indicator and activate the blue indicator
         greenIndicator = OFF;
         //  keep on blue led
@@ -131,10 +130,16 @@ void ignitionCase() {
         //  also check for headlights settings here
         ignitionState();
         // headlightState();
-      } while (ignitionButtonState);
-
+      } while (ignitionButtonState); 
+    */
+        if (ignitionButtonState) {
+            blueIndicator = ON;
+            sirenOFF();
+            ignitionState();}
+        
+    }
       // if engine is off the headlights and blue indicator should be turned off
-      blueIndicator = OFF;
+      //blueIndicator = OFF;
     //   headlightOff();
     } else {
       // Display ignition failure message and reasons via UART
@@ -151,7 +156,7 @@ void ignitionCase() {
         ignitionButtonState = OFF; // New
     }
   }
-}
+
 
 /*
 prints the introduction string in uart when the driver detected for the first

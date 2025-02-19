@@ -18,18 +18,21 @@ void MEDIUM_MODE();
 void INT_State();
 void LONG_MODE();
 
+void set_servo_step_time();
 
 
 typedef enum {
     LOW_M,
-    INT_M,
+    //INT_M,
     HIGH_M,
     OFF_M,
     INT_3_M,
     INT_6_M,
     INT_8_M
 } ServoMode;
-
+void setServoMode(ServoMode mode);
+void moveServoTo(float targetAngle, int stepDelay);
+void servoControl();
 void servo_update_function();
 
 //=====[#include guards - end]=================================================

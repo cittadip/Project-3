@@ -39,13 +39,16 @@ void safeCarSystemInit()
 
 void safeCarSystemUpdate()
 {
-    userInterfaceUpdate();
+    
     pcSerialComUpdate();
-    //WiperModeState();
-    //INT_State();
-
     ignitionCase(); //New Change 
     drivingState(); // New Change
+    WiperModeState();
+    INT_State();
+    servo_update_function();
+    //servoControl();
+    userInterfaceUpdate(); 
+    
     delay(SYSTEM_TIME_INCREMENT_MS);
 }
 

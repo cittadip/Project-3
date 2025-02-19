@@ -10,8 +10,6 @@ int main()
 {
     safeCarSystemInit();
     while (true) {
-        SERVO_HIGH_MODE();
-        servo_update_function();
         safeCarSystemUpdate();
     }
 }

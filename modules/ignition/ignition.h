@@ -21,7 +21,9 @@ bool getDriverPresent();
 bool getPassengerPresent();
 bool getDriverSeatbelt();
 bool getPassengerSeatbelt();
+bool isignitionon();
 
+void userInterfaceUpdate();
 
 //=====[#include guards - end]=================================================
 
