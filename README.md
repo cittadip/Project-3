@@ -20,10 +20,10 @@ We decided to use a positional motor for our windshield wipers. We decided to us
 | If the ignition is lit, normal ignition occurs, the blue LED turns on and the green LED off . Display the message, “Engine started.”    | pass|                                                                      
 | If the ignition is not enabled then ignition is inhibited. Sound the alarm buzzer and display the message, “Ignition inhibited” and why the ignition was inhibited | pass | 
 | Stop the engine when the ignition button is pushed and released when running                 | pass | 
-| Wipers move at the speed the user selected if the engine is running | ? |
-| Wipers move with the delay selected | ? |
+| Wipers move at the speed the user selected if the engine is running | pass |
+| Wipers move with the delay selected | fail |
 | The speed and delay of the wipers is displayed on the LCD| pass|
-| When wiper mode is selected to off the wiper goes back to 0 degrees, completing its cycle if in one | ?|
+| When wiper mode is selected to off the wiper goes back to 0 degrees, completing its cycle if in one | fal|
 
 ## Modular Diagram of Code 
 
