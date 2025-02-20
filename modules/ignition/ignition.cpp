@@ -34,9 +34,6 @@ AnalogIn wiperDelaySelector(A1);
 DigitalOut greenIndicator(LED1);
 DigitalOut blueIndicator(LED2);
 
-
-
-
 //=====[Declaration and initialization of public global variables]=============
 
 int introComplete = false; // Tracks whether the welcome message for the driver
@@ -47,6 +44,15 @@ bool ignitionButtonState = OFF; //******* try ON first (but also change the vals
 float potentiometerReading = 0.0;
 float potentiometerReadingScaled = 0.0;
 
+int buttonReleaseTime = 0;
+bool ignitionReleased = false;
+bool engineRunning = OFF;
+//bool blueIndicator ;
+//bool greenIndicator = OFF;
+ 
+
+
+ignitionState_t ignition_State = BUTTON_OFF_0;
 
 // variables used in tracking the falling edge of the ignition button
 bool ignitionPrevious = ON;
@@ -92,6 +98,8 @@ void outputsInit() {
 Tracks the falling edge of the ignition button
 Allows for the ignition button to turn the engine off on release
 */
+
+/*
 void ignitionState() {
   if (ignitionButton && !ignitionPrevious) {
     if (waitForRelease) {
@@ -103,68 +111,18 @@ void ignitionState() {
     waitForRelease = true;
   }
   ignitionPrevious = ignitionButton;
-}
+} */
 
 /*
 activates when the ignition button is pressed and acts based on a case-to-case
 basis Ex. uart messages are printed based on which buttons are not pressed to
 start the engine if all buttons are pressed the engine will start
 */
-void ignitionCase() {
-  // maybe change the if statement to look for a button release
-  ignitionState();
-  if (ignitionButtonState) {
-    // Check if all required conditions are met for engine start
-    if (driverPresent && passengerPresent && driverSeatbelt && passengerSeatbelt) {
-        uartCommands(UART_ENGINE_KEY);
 
-      // this loop does 1 loop of all the functions that would occur if when the
-      // engine is on before checking if the button was pushes and released
-      // again
-     /* do {
-        // Turn off the green indicator and activate the blue indicator
-        greenIndicator = OFF;
-        //  keep on blue led
-        blueIndicator = ON;
-        sirenOFF();
-        //  also check for headlights settings here
-        ignitionState();
-        // headlightState();
-      } while (ignitionButtonState); 
-    */
-        if (ignitionButtonState) {
-            blueIndicator = ON;
-            sirenOFF();
-            ignitionState();}
-        
-    }
-      // if engine is off the headlights and blue indicator should be turned off
-      //blueIndicator = OFF;
-    //   headlightOff();
-    } else {
-      // Display ignition failure message and reasons via UART
-      // Report individual reasons for failure
-      uartCommands(UART_ERROR_KEY);
 
-      // The alarm will keep sounding until the engine is properly
-      // started eg. passenger/driver present and seatbelts on
-      if (!(driverPresent && passengerPresent && driverSeatbelt &&
-                 passengerSeatbelt)){
-        sirenON();
-        drivingState();}
-      else {
-            ignitionButtonState = OFF;
-        }
-      
-    /*  
-      do {
-        sirenON();
-        drivingState();
-      } while (!(driverPresent && passengerPresent && driverSeatbelt &&
-                 passengerSeatbelt));
-        ignitionButtonState = OFF; // New */
-    }
-  }
+
+
+
 
 
 /*
@@ -187,6 +145,8 @@ The green indicator lights up when all safety conditions (driver and
 passenger present, seatbelts fastened) are met, indicating that the vehicle
 is in a safe state to operate.
 */
+
+
 void drivingState() {
   driverIntroduction();
   if (driverPresent && passengerPresent && driverSeatbelt && passengerSeatbelt) {
@@ -194,6 +154,10 @@ void drivingState() {
   } else {
     greenIndicator = OFF; // One or more conditions not met, unsafe state
   }
+}
+
+bool getEngineState() {
+    return engineRunning;
 }
 
 
@@ -204,4 +168,79 @@ bool isignitionon() {
     return false;
     }
 }
+
+
+
+
+void ignitionUpdate()
+{
+    
+    switch (ignition_State) {
+    case BUTTON_OFF_0:
+    if (ignitionReleased) {
+            sirenOFF();
+            blueIndicator = OFF;
+            greenIndicator = OFF;
+            engineRunning = OFF;
+    }
+            if ( driverPresent ) {
+                if (!introComplete) {
+                    driverIntroduction();
+                }
+                }
+                if (ignitionButton) {
+                ignition_State = BUTTON_ON_1;
+                }
+            break;
+
+    case BUTTON_ON_1:
+            if ( driverPresent && passengerPresent && driverSeatbelt && passengerSeatbelt) {
+                greenIndicator = ON;
+                sirenOFF();}
+            if(ignitionButton) {
+                if(greenIndicator) {
+                    ignition_State = BUTTON_READY_STATE;
+                }
+                else {
+                    if (!blueIndicator && !ignitionReleased) {
+                    sirenON();
+                    uartCommands(UART_ERROR_KEY);
+                    }
+                }
+            }
+            break;
+
+    case BUTTON_READY_STATE:
+            sirenOFF();
+            uartCommands(UART_ENGINE_KEY);
+            blueIndicator = ON;
+            greenIndicator = OFF;
+            engineRunning = ON;
+            //bool ignitionButttonRelease = false;
+            if(!ignitionButton) {
+                ignition_State = BUTTON_ON_2;
+            }
+
+            break;
+    
+    case BUTTON_ON_2:
+            if (engineRunning) {
+            ignitionReleased = false;
+            }
+            if (buttonReleaseTime < 1){
+                delay(10);
+                if (!ignitionButton) {
+                    buttonReleaseTime ++;
+
+                }
+            }
+            if (buttonReleaseTime >= 1 && ignitionButton){
+                ignitionReleased = true;
+                ignition_State = BUTTON_OFF_0;
+            }
+            break;
+
+        }
+    }
+
 
