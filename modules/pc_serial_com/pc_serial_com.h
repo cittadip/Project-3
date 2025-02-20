@@ -13,13 +13,6 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
-void pcSerialComInit();
-char pcSerialComCharRead();
-void pcSerialComStringWrite( const char* str );
-void pcSerialComUpdate();
-bool pcSerialComCodeCompleteRead();
-void pcSerialComCodeCompleteWrite( bool state );
-
 void uartCommands(int cmd);
 
 //=====[#include guards - end]=================================================
