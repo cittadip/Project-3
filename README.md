@@ -23,7 +23,7 @@ We decided to use a positional motor for our windshield wipers. We decided to us
 | Wipers move at the speed the user selected if the engine is running | pass |
 | Wipers move with the delay selected | fail |
 | The speed and delay of the wipers is displayed on the LCD| pass|
-| When wiper mode is selected to off the wiper goes back to 0 degrees, completing its cycle if in one | fal|
+| When wiper mode is selected to off the wiper goes back to 0 degrees, completing its cycle if in one | fail|
 
 ## Modular Diagram of Code 
 
